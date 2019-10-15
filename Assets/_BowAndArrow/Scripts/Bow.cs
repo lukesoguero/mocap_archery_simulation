@@ -27,6 +27,14 @@ public class Bow : MonoBehaviour
         createArrow();
     }
 
+    private void Update() {
+        if(!pullingHand || !currentArrow) return;
+        pullValue = calculatePull(pullingHand);
+        pullValue = Mathf.Clamp(pullValue, 0.0f, 1.0f);
+
+        animator.SetFloat("Blend", pullValue);
+    }
+
     private void createArrow() {
         GameObject arrowObj = Instantiate(arrowPrefab, socket);
         arrowObj.transform.localPosition = new Vector3(0, 0, 0.425f);
@@ -34,11 +42,36 @@ public class Bow : MonoBehaviour
         currentArrow = arrowObj.GetComponent<Arrow>();
     }
 
-    public void pull(Transform hand) {
+    public float calculatePull(Transform pullHand) {
+        Vector3 direction = end.position - start.position;
+        float magnitude = direction.magnitude;
+        direction.Normalize();
+
+        Vector3 difference = pullHand.position - start.position;
+
+        return Vector3.Dot(direction, difference) / magnitude;
 
     }
 
-    public void release() {
+    public void pull(Transform hand) {
+        float distance = Vector3.Distance(hand.position, start.position);
+        if (distance > grabThreshold) return;
+        pullingHand = hand;
+    }
 
+    public void release() {
+        if (pullValue > 0.25f) {
+            fireArrow();
+        }
+        pullingHand = null;
+        pullValue = 0.0f;
+        animator.SetFloat("Blend", 0.0f);
+
+        if (!currentArrow)
+            createArrow();
+    }
+
+    private void fireArrow() {
+        currentArrow = null;
     }
 }
