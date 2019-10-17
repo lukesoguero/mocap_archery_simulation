@@ -11,8 +11,10 @@ public class OculusInput : MonoBehaviour
 
     private void Update()
     {
-        if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, m_Controller))
+        if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, m_Controller)) {
             m_Bow.pull(m_OppositeController.transform);
+            Debug.Log("Pressed");
+        }
 
         if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, m_Controller))
             m_Bow.release();

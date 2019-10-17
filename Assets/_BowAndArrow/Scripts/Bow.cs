@@ -72,6 +72,7 @@ public class Bow : MonoBehaviour
     }
 
     private void fireArrow() {
+        currentArrow.fire(pullValue);
         currentArrow = null;
     }
 }
