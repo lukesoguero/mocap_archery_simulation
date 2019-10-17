@@ -67,8 +67,9 @@ public class Bow : MonoBehaviour
         pullValue = 0.0f;
         animator.SetFloat("Blend", 0.0f);
 
-        if (!currentArrow)
+        if (!currentArrow) {
             createArrow();
+        }
     }
 
     private void fireArrow() {
