@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class OculusInput : MonoBehaviour
 {
+    public bool useKeyboard = false;
     public Bow m_Bow = null;
     public GameObject m_OppositeController = null;
     //public OVRInput.Controller m_Controller = OVRInput.Controller.None;
@@ -12,12 +13,23 @@ public class OculusInput : MonoBehaviour
     private void Update()
     {
         OVRInput.Update();
-        if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)) {
-            Debug.Log("Pressed");
-            m_Bow.pull(m_OppositeController.transform);
-        }
+        if (useKeyboard) {
+            if(Input.GetKeyDown("space")) {
+                Debug.Log("Pressed");
+                m_Bow.pull(m_OppositeController.transform);
+            }
 
-        if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
-            m_Bow.release();
+            if (Input.GetKeyUp("space"))
+                m_Bow.release();
+        }
+        else {
+            if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)) {
+                Debug.Log("Pressed");
+                m_Bow.pull(m_OppositeController.transform);
+            }
+
+            if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
+                m_Bow.release();
+        }
     }
 }
