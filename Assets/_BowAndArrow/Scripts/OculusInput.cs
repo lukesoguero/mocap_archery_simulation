@@ -5,31 +5,25 @@ using UnityEngine;
 
 public class OculusInput : MonoBehaviour
 {
-    public bool useKeyboard = false;
     public Bow m_Bow = null;
+    public GameObject quiver = null;
     public GameObject m_OppositeController = null;
-    //public OVRInput.Controller m_Controller = OVRInput.Controller.None;
 
     private void Update()
     {
         OVRInput.Update();
-        if (useKeyboard) {
-            if(Input.GetKeyDown("space")) {
-                Debug.Log("Pressed");
-                m_Bow.pull(m_OppositeController.transform);
+        if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || Input.GetKeyDown("space")) {
+            // If player is reaching into quiver
+            if (quiver.GetComponent<Collider>().bounds.Contains(m_OppositeController.transform.position)) {
+                m_Bow.createArrow();
             }
-
-            if (Input.GetKeyUp("space"))
-                m_Bow.release();
+            else {
+                m_Bow.pull();
+            }
         }
-        else {
-            if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)) {
-                Debug.Log("Pressed");
-                m_Bow.pull(m_OppositeController.transform);
-            }
 
-            if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
-                m_Bow.release();
+        if (Input.GetKeyUp("space") || OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger)) {
+            m_Bow.release();
         }
     }
 }
