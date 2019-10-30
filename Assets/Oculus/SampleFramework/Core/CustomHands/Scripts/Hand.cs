@@ -190,10 +190,10 @@ namespace OVRTouchSample
             // blend between open hand and fully closed fist
             // float flex = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, m_controller);
             // m_animator.SetFloat(m_animParamIndexFlex, flex);
-            if (Input.GetKeyDown("space")) {
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || Input.GetKeyDown("space")) {
                 isGrabbing = true;
             }
-            if (Input.GetKeyUp("space")) {
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || Input.GetKeyUp("space")) {
                 isGrabbing = false;
             }
             if (isGrabbing) m_animator.SetFloat(m_animParamIndexFlex, 1.0f);
