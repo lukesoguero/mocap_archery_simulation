@@ -11,7 +11,7 @@ public class Bow : MonoBehaviour
     public Transform end = null;
     public Transform start = null;
     public Transform socket = null;
-    public Transform pullingHand = null;
+    public CustomHand hand = null;
 
     private Arrow currentArrow = null;
     private bool isPulling = false;
@@ -25,22 +25,17 @@ public class Bow : MonoBehaviour
     }
 
     private void Start() {
-        createArrow();
+
     }
 
     private void Update() {
-        if(!currentArrow || !isPulling) return;
-        pullValue = calculatePull(pullingHand);
+        if(!isPulling) return;
+        if (!currentArrow)
+            lockArrow();
+        pullValue = calculatePull(hand.transform);
         pullValue = Mathf.Clamp(pullValue, 0.0f, 1.0f);
 
         animator.SetFloat("Blend", pullValue);
-    }
-
-    public void createArrow() {
-        GameObject arrowObj = Instantiate(arrowPrefab, pullingHand);
-        arrowObj.transform.localPosition = new Vector3(0, 0, 0.2f);
-        arrowObj.transform.localEulerAngles = Vector3.zero;
-        currentArrow = arrowObj.GetComponent<Arrow>();
     }
 
     public float calculatePull(Transform pullHand) {
@@ -54,8 +49,16 @@ public class Bow : MonoBehaviour
 
     }
 
+    private void lockArrow() {
+        hand.currentArrow.transform.parent = socket;
+        hand.currentArrow.transform.localPosition = new Vector3(0, 0, 0.425f);
+        hand.currentArrow.transform.localEulerAngles = Vector3.zero;
+        currentArrow = hand.currentArrow;
+        hand.currentArrow = null;
+    }
+
     public void pull() {
-        float distance = Vector3.Distance(pullingHand.position, start.position);
+        float distance = Vector3.Distance(hand.transform.position, start.position);
         if (distance > grabThreshold) return;
         isPulling = true;
     }
