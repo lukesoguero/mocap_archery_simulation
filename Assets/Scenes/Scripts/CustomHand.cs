@@ -9,7 +9,7 @@ public class CustomHand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        createArrow();
+        //createArrow();
     }
 
     // Update is called once per frame
