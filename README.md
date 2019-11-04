@@ -1,5 +1,5 @@
 # VR Archery Simulation
-A motion capture VR archery simulation.
+A motion capture VR archery simulation. Players use two motion tracked controllers to retrieve arrows from their quiver and shoot them with a bow.
 
 Assets Used:
 "LowPoly Environment Pack" by KORVEEN
